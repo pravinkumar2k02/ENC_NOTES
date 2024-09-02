@@ -7,8 +7,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/notes" component={NotesPage} />
         <Route path="/" component={LoginPage} />
+        <Route path="/notes" component={NotesPage} />
       </Routes>
     </Router>
   );
