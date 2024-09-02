@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [encryptionKey, setEncryptionKey] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate(); // Replace useHistory with useNavigate
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -22,7 +22,7 @@ function LoginPage() {
         if (data[username] !== undefined) {
           localStorage.setItem('username', username);
           localStorage.setItem('encryptionKey', encryptionKey);
-          history.push('/notes');
+          navigate('/notes'); // Use navigate instead of history.push
         } else {
           alert('Username does not exist. Please register.');
         }

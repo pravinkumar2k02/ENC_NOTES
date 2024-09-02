@@ -1,15 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginPage from './LoginPage';
 import NotesPage from './NotesPage';
 
 function App() {
   return (
     <Router>
-      <Switch>
+      <Routes>
         <Route path="/notes" component={NotesPage} />
         <Route path="/" component={LoginPage} />
-      </Switch>
+      </Routes>
     </Router>
   );
 }
