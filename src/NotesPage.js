@@ -156,7 +156,6 @@ const NotesPage = () => {
               <input
                 type="text"
                 placeholder="User Key"
-                disabled={!userKey}
                 value={userKey}
                 onChange={(e) => setUserKey(e.target.value)}
               />
