@@ -105,9 +105,10 @@
   margin-right: 10px;
   border: none;
   outline: none;
-  width:100px;
+  width:133px;
   padding: 5px;
   border-bottom: 1px solid #ddd;
+  font-size: 20px;
 }
 
 /* Full-screen note styling */
