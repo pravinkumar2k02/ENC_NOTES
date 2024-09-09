@@ -53,7 +53,7 @@ function LoginPage() {
               console.error('Error during encryption:', error);
               setMessage('Error during encryption.');
             }
-          }, 60000); // 10 minutes in milliseconds
+          }, 600000); // 10 minutes in milliseconds
         }
       }
     } catch (error) {
