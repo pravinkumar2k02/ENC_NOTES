@@ -1,0 +1,208 @@
+/* General NotesPage styling */
+.notes-page {
+  padding: 20px;
+}
+
+.add-button {
+  margin-bottom: 20px;
+}
+
+/* Notes container */
+.notes-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Note card styling */
+.note-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+  width: 6.5cm;
+  height: 9cm;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  word-wrap: break-word;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Adjustments for text overflow */
+.note-card h3, .note-card p {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+}
+
+/* .note-card h3{
+  font-size: 25px;
+}
+.note-card p{
+  font-size: 20px;
+} */
+
+/* Ensure textarea and input handle overflow */
+.note-card input,
+.note-card textarea {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  resize: none;
+  font-family: inherit;
+  font-size: inherit;
+  width: 100%;
+  color: #333;
+  word-wrap: break-word;
+}
+
+/* Ensure textarea grows vertically as text expands */
+.note-card textarea {
+  min-height: 50px;
+  overflow: auto;
+}
+
+/* Custom context menu for deletion */
+.context-menu {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  padding: 10px;
+  z-index: 1000;
+}
+
+.context-menu button {
+  display: block;
+  width: 100%;
+  padding: 5px 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.context-menu button:hover {
+  background-color: #f0f0f0;
+}
+
+/* Encryption section styling */
+.encrypt-section {
+  margin-top: 0px;
+  float: right;
+}
+
+.encrypt-section input {
+  margin-right: 10px;
+  border: none;
+  outline: none;
+  width:100px;
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Full-screen note styling */
+.full-screen-note {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  background-color: white;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.full-screen-note .note-card {
+  position: absolute; /* Allow the note card to fit within the full-screen view */
+  top: 60px; /* Space for the back button */
+  left: 20px;
+  width: calc(100% - 40px); /* Adjust width to fit within the container */
+  height: calc(100vh - 80px); /* Adjust height to fit within the container */
+  margin: 0; /* Remove default margins */
+  box-sizing: border-box; /* Include padding in the element's total width and height */
+  overflow: auto; /* Allow internal scrolling for large content */
+  background-color: white;
+  overflow: hidden;
+}
+
+.full-screen-note textarea {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box; /* Include padding in the element's total width and height */
+  overflow: auto; /* Allow scrolling within the textarea if content overflows */
+  border: none; /* Remove default border */
+  resize: none; /* Prevent resizing */
+  padding: 10px; /* Add padding for better readability */
+  font-size: 16px; /* Adjust font size for readability */
+  outline: none;
+}
+
+
+.note-card input,
+.note-card textarea {
+  border: none;
+  margin: 0;
+}
+
+.save-button {
+  margin-top: 10px;
+}
+
+.back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.save-button {
+  position: absolute;
+  bottom: 20px; /* Moves the button to the bottom of the screen */
+  right: 20px;  /* Aligns the button to the right side */
+  background-color: #007bff; /* Button color */
+  color: white; /* Text color */
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 1000; /* Ensure the button stays above other elements */
+}
+
+.save-button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Full-Screen Note Styles */
+.full-screen-note .note-card input ,.note-card h3{
+  font-size: 24px;  /* Adjust title font size */
+  font-weight: bold;  /* Optional: Make title bold */
+  width: 100%;  /* Ensure title input takes full width */
+  padding: 10px;  /* Add padding for spacing */
+  margin-bottom: 10px;  /* Space between title and body */
+  border: none;  /* Remove border */
+  border-bottom: 2px solid #ccc;  /* Add bottom border */
+  box-sizing: border-box;  /* Ensure padding doesn't overflow */
+}
+
+.full-screen-note .note-card textarea ,.note-card p{
+  font-size: 18px;  /* Adjust body font size */
+  width: 100%;  /* Ensure body textarea takes full width */
+  height: 70vh;  /* Give body some height */
+  padding: 10px;  /* Add padding for better readability */
+  border: none;  /* Remove border */
+  box-sizing: border-box;  /* Make padding fit inside */
+  resize: none;  /* Disable resizing */
+}
