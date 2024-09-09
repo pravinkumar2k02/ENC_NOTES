@@ -44,7 +44,7 @@ function LoginPage() {
               // Encrypt the file after 5 minutes
               await axios.post('http://localhost:5000/encrypt', { userKey });
               console.log('File encrypted successfully after 10 minutes.');
-              navigate('/notes');
+              navigate('/');
               // Clear localStorage after encryption
               localStorage.clear();
               console.log('LocalStorage cleared.');
@@ -53,7 +53,7 @@ function LoginPage() {
               console.error('Error during encryption:', error);
               setMessage('Error during encryption.');
             }
-          }, 600000); // 10 minutes in milliseconds
+          }, 60000); // 10 minutes in milliseconds
         }
       }
     } catch (error) {
