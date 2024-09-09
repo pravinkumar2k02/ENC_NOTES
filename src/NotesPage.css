@@ -31,6 +31,15 @@
   margin-right: auto;
 }
 
+@media only screen and (max-width: 600px) {
+  .note-card {
+    width: 100%;
+    height: 4.5cm; /* Reduce height to half */
+    padding: 8px;
+    margin: 8px;
+  }
+}
+
 /* Adjustments for text overflow */
 .note-card h3, .note-card p {
   margin: 0;
@@ -39,12 +48,9 @@
   white-space: pre;
 }
 
-/* .note-card h3{
-  font-size: 25px;
+.add-icon{
+  cursor: pointer;
 }
-.note-card p{
-  font-size: 20px;
-} */
 
 /* Ensure textarea and input handle overflow */
 .note-card input,
@@ -166,10 +172,12 @@
   border: none;
   padding: 10px 20px;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .save-button {
   position: absolute;
+  border-radius: 5px;
   bottom: 20px; /* Moves the button to the bottom of the screen */
   right: 20px;  /* Aligns the button to the right side */
   background-color: #007bff; /* Button color */

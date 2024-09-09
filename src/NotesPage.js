@@ -159,7 +159,7 @@ const NotesPage = () => {
                 value={userKey}
                 onChange={(e) => setUserKey(e.target.value)}
               />
-              <SiLetsencrypt onClick={handleEncryptNotes} disabled={!userKey} size={32} />
+              <SiLetsencrypt onClick={handleEncryptNotes} className="add-icon" disabled={!userKey} size={32} />
             </div>
           </div>
           <div className="notes-container">
