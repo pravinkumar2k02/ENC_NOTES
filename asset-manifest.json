@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "//pravinkumar2k02.github.io/NOTES/static/css/main.5eca2de8.css",
+    "main.js": "//pravinkumar2k02.github.io/NOTES/static/js/main.5b7daeef.js",
+    "static/js/453.ed3810f9.chunk.js": "//pravinkumar2k02.github.io/NOTES/static/js/453.ed3810f9.chunk.js",
+    "index.html": "//pravinkumar2k02.github.io/NOTES/index.html",
+    "main.5eca2de8.css.map": "//pravinkumar2k02.github.io/NOTES/static/css/main.5eca2de8.css.map",
+    "main.5b7daeef.js.map": "//pravinkumar2k02.github.io/NOTES/static/js/main.5b7daeef.js.map",
+    "453.ed3810f9.chunk.js.map": "//pravinkumar2k02.github.io/NOTES/static/js/453.ed3810f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5eca2de8.css",
+    "static/js/main.5b7daeef.js"
+  ]
+}
