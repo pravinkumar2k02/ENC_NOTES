@@ -14,15 +14,22 @@ const NotesPage = () => {
   const [userKey, setUserKey] = useState(localStorage.getItem('userKey') || '');
   const [fullScreenNote, setFullScreenNote] = useState(null);
 
+  // Access API key from environment variables
+  const apiKey = process.env.REACT_APP_API_KEY;
+
   useEffect(() => {
-    axios.get('https://deeply-spectrum-cellar.glitch.me/notes')
-      .then(response => {
-        setNotes(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching notes:', error);
-      });
-  }, []);
+    axios.get('https://deeply-spectrum-cellar.glitch.me/notes', {
+      headers: {
+        'Authorization': `Bearer ${apiKey}`
+      }
+    })
+    .then(response => {
+      setNotes(response.data);
+    })
+    .catch(error => {
+      console.error('Error fetching notes:', error);
+    });
+  }, [apiKey]);
 
   const handleAddNote = () => {
     setNewTitle('');
@@ -46,13 +53,17 @@ const NotesPage = () => {
   };
 
   const handleSaveToBackend = debounce((updatedNotes) => {
-    axios.post('https://deeply-spectrum-cellar.glitch.me/save_notes', { notes: updatedNotes })
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.error('Error saving notes:', error);
-      });
+    axios.post('https://deeply-spectrum-cellar.glitch.me/save_notes', { notes: updatedNotes }, {
+      headers: {
+        'Authorization': `Bearer ${apiKey}`
+      }
+    })
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.error('Error saving notes:', error);
+    });
   }, 1000);
 
   const handleCardClick = (title) => {
@@ -79,14 +90,18 @@ const NotesPage = () => {
   };
 
   const handleEncryptNotes = () => {
-    axios.post('https://deeply-spectrum-cellar.glitch.me/encrypt', { userKey })
-      .then(response => {
-        localStorage.clear();
-        window.location.href = '/';
-      })
-      .catch(error => {
-        console.error('Error encrypting notes:', error);
-      });
+    axios.post('https://deeply-spectrum-cellar.glitch.me/encrypt', { userKey }, {
+      headers: {
+        'Authorization': `Bearer ${apiKey}`
+      }
+    })
+    .then(response => {
+      localStorage.clear();
+      window.location.href = '/';
+    })
+    .catch(error => {
+      console.error('Error encrypting notes:', error);
+    });
   };
 
   const handleDeleteNote = (title) => {

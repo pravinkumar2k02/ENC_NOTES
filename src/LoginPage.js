@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,6 +6,9 @@ function LoginPage() {
   const [userKey, setUserKey] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+
+  // Get API key from environment variables
+  const apiKey = process.env.REACT_APP_API_KEY;
 
   useEffect(() => {
     // Set an interval to keep the server alive every 4 minutes (240000 ms)
@@ -37,37 +40,38 @@ function LoginPage() {
     }
 
     try {
-      // const response = await axios.post('http://localhost:5000/decrypt', { userKey }, {
-        const response = await axios.post('https://deeply-spectrum-cellar.glitch.me/decrypt', { userKey }, {
+      // Use the API key from the environment variable in the request headers
+      const response = await axios.post('https://deeply-spectrum-cellar.glitch.me/decrypt', { userKey }, {
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`  // Include the API key in the Authorization header
         },
       });
+
       setMessage(response.data);
       console.log(response.data);
+      
       if (response.data.success) {
         localStorage.setItem('userKey', userKey);
         navigate('/notes');
 
-        // Check if decryption is successful and if the file is decrypted
         if (response.data.isDecrypted) {
-          // Wait for 5 minutes (300000 ms) before encrypting again
+          // Encrypt the file again after 5 minutes
           setTimeout(async () => {
             try {
-              // Encrypt the file after 5 minutes
-              // await axios.post('http://localhost:5000/encrypt', { userKey });
-              await axios.post('https://deeply-spectrum-cellar.glitch.me/encrypt', { userKey });
-              console.log('File encrypted successfully after 10 minutes.');
+              await axios.post('https://deeply-spectrum-cellar.glitch.me/encrypt', { userKey }, {
+                headers: {
+                  'Authorization': `Bearer ${apiKey}`  // Use the API key for encryption as well
+                }
+              });
+              console.log('File encrypted successfully after 5 minutes.');
               navigate('/');
-              // Clear localStorage after encryption
-              localStorage.clear();
-              console.log('LocalStorage cleared.');
-
+              localStorage.clear();  // Clear localStorage after encryption
             } catch (error) {
               console.error('Error during encryption:', error);
               setMessage('Error during encryption.');
             }
-          }, 300000); // 10 minutes in milliseconds
+          }, 300000); // 5 minutes in milliseconds
         }
       }
     } catch (error) {
