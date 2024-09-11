@@ -25,7 +25,8 @@ function LoginPage() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/decrypt', { userKey }, {
+      // const response = await axios.post('http://localhost:5000/decrypt', { userKey }, {
+        const response = await axios.post('https://deeply-spectrum-cellar.glitch.me/decrypt', { userKey }, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -42,7 +43,8 @@ function LoginPage() {
           setTimeout(async () => {
             try {
               // Encrypt the file after 5 minutes
-              await axios.post('http://localhost:5000/encrypt', { userKey });
+              // await axios.post('http://localhost:5000/encrypt', { userKey });
+              await axios.post('https://deeply-spectrum-cellar.glitch.me/encrypt', { userKey });
               console.log('File encrypted successfully after 10 minutes.');
               navigate('/');
               // Clear localStorage after encryption

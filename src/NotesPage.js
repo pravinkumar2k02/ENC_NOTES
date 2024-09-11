@@ -15,7 +15,7 @@ const NotesPage = () => {
   const [fullScreenNote, setFullScreenNote] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/notes')
+    axios.get('https://deeply-spectrum-cellar.glitch.me/notes')
       .then(response => {
         setNotes(response.data);
       })
@@ -46,7 +46,7 @@ const NotesPage = () => {
   };
 
   const handleSaveToBackend = debounce((updatedNotes) => {
-    axios.post('http://localhost:5000/save_notes', { notes: updatedNotes })
+    axios.post('https://deeply-spectrum-cellar.glitch.me/save_notes', { notes: updatedNotes })
       .then(response => {
         console.log(response.data);
       })
@@ -79,7 +79,7 @@ const NotesPage = () => {
   };
 
   const handleEncryptNotes = () => {
-    axios.post('http://localhost:5000/encrypt', { userKey })
+    axios.post('https://deeply-spectrum-cellar.glitch.me/encrypt', { userKey })
       .then(response => {
         localStorage.clear();
         window.location.href = '/';
