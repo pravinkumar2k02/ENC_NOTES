@@ -7,6 +7,18 @@ function LoginPage() {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Set an interval to keep the server alive every 4 minutes (240000 ms)
+    const keepAliveInterval = setInterval(() => {
+      axios.get('https://deeply-spectrum-cellar.glitch.me/keep-alive')
+        .then(() => console.log('Keep-alive ping sent'))
+        .catch((error) => console.error('Error sending keep-alive ping:', error));
+    }, 240000); // 4 minutes
+
+    // Clear interval on component unmount
+    return () => clearInterval(keepAliveInterval);
+  }, []);
+
   const handleKeyChange = (e) => {
     setUserKey(e.target.value);
   };
