@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,18 +6,25 @@ function LoginPage() {
   const [userKey, setUserKey] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-
+  // const apiKey = "kj43xjcndsihcij234we9fi9ewirweT"; // Retrieve the API key from environment variables
+  const apiKey = process.env.PRIVATE_AUTH_TOKEN;
+  // const API_URL = 'http://localhost:5000';
+  const API_URL = 'https://deeply-spectrum-cellar.glitch.me';
   useEffect(() => {
     // Set an interval to keep the server alive every 4 minutes (240000 ms)
     const keepAliveInterval = setInterval(() => {
-      axios.get('https://deeply-spectrum-cellar.glitch.me/keep-alive')
+      axios.get(`${API_URL}/keep-alive`, {
+        headers: {
+          'Authorization': `Bearer ${apiKey}` // Add API key to header
+        }
+      })
         .then(() => console.log('Keep-alive ping sent'))
         .catch((error) => console.error('Error sending keep-alive ping:', error));
     }, 240000); // 4 minutes
 
     // Clear interval on component unmount
     return () => clearInterval(keepAliveInterval);
-  }, []);
+  }, [apiKey]);
 
   const handleKeyChange = (e) => {
     setUserKey(e.target.value);
@@ -37,11 +44,11 @@ function LoginPage() {
     }
 
     try {
-      // const response = await axios.post('http://localhost:5000/decrypt', { userKey }, {
-        const response = await axios.post('https://deeply-spectrum-cellar.glitch.me/decrypt', { userKey }, {
+      const response = await axios.post(`${API_URL}/decrypt`, { userKey }, {
         headers: {
           'Content-Type': 'application/json',
-        },
+          'Authorization': `Bearer ${apiKey}` // Add API key to header
+        }
       });
       setMessage(response.data);
       console.log(response.data);
@@ -55,8 +62,12 @@ function LoginPage() {
           setTimeout(async () => {
             try {
               // Encrypt the file after 5 minutes
-              // await axios.post('http://localhost:5000/encrypt', { userKey });
-              await axios.post('https://deeply-spectrum-cellar.glitch.me/encrypt', { userKey });
+              await axios.post(`${API_URL}/encrypt`, { userKey }, {
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${apiKey}` // Add API key to header
+                }
+              });
               console.log('File encrypted successfully after 10 minutes.');
               navigate('/');
               // Clear localStorage after encryption
@@ -67,7 +78,7 @@ function LoginPage() {
               console.error('Error during encryption:', error);
               setMessage('Error during encryption.');
             }
-          }, 300000); // 10 minutes in milliseconds
+          }, 300000); // 5 minutes in milliseconds
         }
       }
     } catch (error) {

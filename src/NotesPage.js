@@ -5,17 +5,24 @@ import debounce from 'lodash.debounce';
 import { IoMdAdd } from 'react-icons/io';
 import { SiLetsencrypt } from 'react-icons/si';
 
+const API_URL = 'https://deeply-spectrum-cellar.glitch.me';
+// const API_URL = 'http://localhost:5000';
+// const AUTH_TOKEN = 'kj43xjcndsihcij234we9fi9ewirweT'; // Replace with your actual auth token
+const AUTH_TOKEN = process.env.PRIVATE_AUTH_TOKEN;
+
 const NotesPage = () => {
   const [notes, setNotes] = useState({});
   const [newTitle, setNewTitle] = useState('');
   const [newBody, setNewBody] = useState('');
   const [isNewNote, setIsNewNote] = useState(false);
   const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, title: '' });
-  const [userKey, setUserKey] = useState(localStorage.getItem('userKey') || '');
+  const [userKey, setUserKey] = useState(localStorage.getItem('userKey') || ''); // Ensure userKey is defined
   const [fullScreenNote, setFullScreenNote] = useState(null);
 
   useEffect(() => {
-    axios.get('https://deeply-spectrum-cellar.glitch.me/notes')
+    axios.get(`${API_URL}/notes`, {
+      headers: { Authorization: `Bearer ${AUTH_TOKEN}` }
+    })
       .then(response => {
         setNotes(response.data);
       })
@@ -46,7 +53,9 @@ const NotesPage = () => {
   };
 
   const handleSaveToBackend = debounce((updatedNotes) => {
-    axios.post('https://deeply-spectrum-cellar.glitch.me/save_notes', { notes: updatedNotes })
+    axios.post(`${API_URL}/save_notes`, { notes: updatedNotes }, {
+      headers: { Authorization: `Bearer ${AUTH_TOKEN}` }
+    })
       .then(response => {
         console.log(response.data);
       })
@@ -79,7 +88,9 @@ const NotesPage = () => {
   };
 
   const handleEncryptNotes = () => {
-    axios.post('https://deeply-spectrum-cellar.glitch.me/encrypt', { userKey })
+    axios.post(`${API_URL}/encrypt`, { userKey }, {
+      headers: { Authorization: `Bearer ${AUTH_TOKEN}` }
+    })
       .then(response => {
         localStorage.clear();
         window.location.href = '/';
@@ -151,7 +162,7 @@ const NotesPage = () => {
       {!fullScreenNote && !isNewNote && (
         <>
           <div className="container">
-            <IoMdAdd onClick={handleAddNote} className="add-icon" disabled={!userKey} size={40} />
+            <IoMdAdd onClick={handleAddNote} className="add-icon" size={40} />
             <div className="encrypt-section">
               <input
                 type="text"
@@ -159,7 +170,7 @@ const NotesPage = () => {
                 value={userKey}
                 onChange={(e) => setUserKey(e.target.value)}
               />
-              <SiLetsencrypt onClick={handleEncryptNotes} className="add-icon" disabled={!userKey} size={32} />
+              <SiLetsencrypt onClick={handleEncryptNotes} className="add-icon" size={32} />
             </div>
           </div>
           <div className="notes-container">
@@ -180,7 +191,7 @@ const NotesPage = () => {
               className="context-menu"
               style={{ top: contextMenu.y, left: contextMenu.x }}
             >
-              <button onClick={() => handleDeleteNote(contextMenu.title)} disabled={!userKey}>Delete</button>
+              <button onClick={() => handleDeleteNote(contextMenu.title)}>Delete</button>
             </div>
           )}
         </>
