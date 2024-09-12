@@ -7,8 +7,8 @@ import { SiLetsencrypt } from 'react-icons/si';
 
 const API_URL = 'https://deeply-spectrum-cellar.glitch.me';
 // const API_URL = 'http://localhost:5000';
-const AUTH_TOKEN = 'kj43xjcndsihcij234we9fi9ewirweT'; // Replace with your actual auth token
-// const AUTH_TOKEN = process.env.PRIVATE_AUTH_TOKEN;
+// const AUTH_TOKEN = 'kj43xjcndsihcij234we9fi9ewirweT'; // Replace with your actual auth token
+const AUTH_TOKEN = process.env.PRIVATE_AUTH_TOKEN;
 
 const NotesPage = () => {
   const [notes, setNotes] = useState({});

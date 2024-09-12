@@ -6,8 +6,8 @@ function LoginPage() {
   const [userKey, setUserKey] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-  const apiKey = "kj43xjcndsihcij234we9fi9ewirweT";
-  // const apiKey = process.env.PRIVATE_AUTH_TOKEN;
+  // const apiKey = "kj43xjcndsihcij234we9fi9ewirweT";
+  const apiKey = process.env.PRIVATE_AUTH_TOKEN;
   // const API_URL = 'http://localhost:5000';
   const API_URL = 'https://deeply-spectrum-cellar.glitch.me';
   useEffect(() => {
