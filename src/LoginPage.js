@@ -6,8 +6,8 @@ function LoginPage() {
   const [userKey, setUserKey] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-  const apiKey = '################'; // Replace with your actual auth token
-  // const apiKey = process.env.REACT_APP_AUTH_TOKEN; //use this if u are using env variables
+  // const apiKey = '################'; // Replace with your actual auth token
+  const apiKey = process.env.REACT_APP_AUTH_TOKEN; //use this if u are using env variables
   // const API_URL = 'http://localhost:5000';
   const API_URL = 'https://deeply-spectrum-cellar.glitch.me';
   useEffect(() => {
