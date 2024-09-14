@@ -6,7 +6,7 @@ import { IoMdAdd } from 'react-icons/io';
 import { SiLetsencrypt } from 'react-icons/si';
 import DOMPurify from 'dompurify';
 
-const API_URL = process.env.REACT_APP_API_URL; // Ensure this is HTTPS
+const API_URL = process.env.REACT_APP_APIURL; // Ensure this is HTTPS
 // const API_URL = 'http://localhost:5000';
 
 const NotesPage = () => {
