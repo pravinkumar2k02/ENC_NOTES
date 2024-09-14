@@ -11,7 +11,7 @@ function LoginPage() {
   const apiKey = process.env.REACT_APP_AUTH_TOKEN; 
   // const apiKey = 'ffdr4eFD5rcgfhREE344e4e';
 
-  const API_URL = 'https://deeply-spectrum-cellar.glitch.me'; // Replace with your actual API URL
+  const API_URL = process.env.REACT_APP_API_URL; // Replace with your actual API URL
   // const API_URL = 'http://localhost:5000';
 
   useEffect(() => {
