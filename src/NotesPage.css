@@ -179,8 +179,8 @@
 .save-button {
   position: absolute;
   border-radius: 5px;
-  top: 5px; /* Moves the button to the top of the screen */
-  right: 20px;  /* Aligns the button to the right side */
+  top: 10px; /* Moves the button to the top of the screen */
+  right: 10px;  /* Aligns the button to the right side */
   background-color: #007bff; /* Button color */
   color: white; /* Text color */
   border: none;
