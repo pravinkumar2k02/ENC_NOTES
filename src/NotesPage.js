@@ -6,8 +6,8 @@ import { IoMdAdd } from 'react-icons/io';
 import { SiLetsencrypt } from 'react-icons/si';
 import DOMPurify from 'dompurify';
 
-const API_URL = 'https://deeply-spectrum-cellar.glitch.me'; // Ensure this is HTTPS
-// const API_URL = 'http://localhost:5000';
+ 
+// const API_URL = 'http://localhost:5000'; // Ensure this is HTTPS
 
 const NotesPage = () => {
   const [notes, setNotes] = useState({});
@@ -33,7 +33,7 @@ const NotesPage = () => {
     );
 
     // Fetch notes from the API
-    axios.get(`${API_URL}/notes`)
+    axios.get(`${process.env.REACT_APP_APIURL}/notes`)
       .then(response => {
         setNotes(response.data);
       })
@@ -64,7 +64,7 @@ const NotesPage = () => {
   };
 
   const handleSaveToBackend = debounce((updatedNotes) => {
-    axios.post(`${API_URL}/save_notes`, { notes: updatedNotes })
+    axios.post(`${process.env.REACT_APP_APIURL}/save_notes`, { notes: updatedNotes })
       .then(response => {
         console.log(response.data);
       })
@@ -98,7 +98,7 @@ const NotesPage = () => {
   };
 
   const handleEncryptNotes = () => {
-    axios.post(`${API_URL}/encrypt`, { userKey })
+    axios.post(`${process.env.REACT_APP_APIURL}/encrypt`, { userKey })
       .then(response => {
         sessionStorage.clear(); // Clear session storage instead of local storage
         window.location.href = '/';
