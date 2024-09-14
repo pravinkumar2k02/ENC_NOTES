@@ -13,6 +13,7 @@ function LoginPage() {
 
   const API_URL = 'https://deeply-spectrum-cellar.glitch.me'; // Replace with your actual API URL
   // const API_URL = 'http://localhost:5000';
+  console.log(process.env.REACT_APP_APIURL);
 
   useEffect(() => {
     // Set an interval to keep the server alive every 4 minutes (240000 ms)
