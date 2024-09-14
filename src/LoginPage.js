@@ -138,7 +138,7 @@ function LoginPage() {
       transition: 'border 0.3s',
       width: '100%',
       boxSizing: 'border-box', 
-      maxWidth: '360px', 
+      maxWidth: '390px', 
     },
     inputFocus: {
       outline: 'none',
