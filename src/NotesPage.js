@@ -4,11 +4,10 @@ import './NotesPage.css';
 import debounce from 'lodash.debounce';
 import { IoMdAdd } from 'react-icons/io';
 import { SiLetsencrypt } from 'react-icons/si';
+import DOMPurify from 'dompurify';
 
-const API_URL = 'https://deeply-spectrum-cellar.glitch.me';
+const API_URL = 'https://deeply-spectrum-cellar.glitch.me'; // Ensure this is HTTPS
 // const API_URL = 'http://localhost:5000';
-// const AUTH_TOKEN = '################'; // Replace with your actual auth token
-const AUTH_TOKEN = process.env.REACT_APP_AUTH_TOKEN; // use this if u are using env variables
 
 const NotesPage = () => {
   const [notes, setNotes] = useState({});
@@ -16,13 +15,25 @@ const NotesPage = () => {
   const [newBody, setNewBody] = useState('');
   const [isNewNote, setIsNewNote] = useState(false);
   const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, title: '' });
-  const [userKey, setUserKey] = useState(localStorage.getItem('userKey') || ''); // Ensure userKey is defined
+  const [userKey, setUserKey] = useState(sessionStorage.getItem('userKey') || ''); // Use session storage for user key
   const [fullScreenNote, setFullScreenNote] = useState(null);
 
   useEffect(() => {
-    axios.get(`${API_URL}/notes`, {
-      headers: { Authorization: `Bearer ${AUTH_TOKEN}` }
-    })
+    // Axios interceptor to add token to request headers
+    axios.interceptors.request.use(
+      config => {
+        const token = process.env.REACT_APP_AUTH_TOKEN;
+        // const token = 'ffdr4eFD5rcgfhREE344e4e';
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      error => Promise.reject(error)
+    );
+
+    // Fetch notes from the API
+    axios.get(`${API_URL}/notes`)
       .then(response => {
         setNotes(response.data);
       })
@@ -48,14 +59,12 @@ const NotesPage = () => {
       setFullScreenNote(null); // Close full-screen note
       handleSaveToBackend(updatedNotes);
     } else {
-      alert("Title and Body are required.");
+      alert('Title and Body are required.');
     }
   };
 
   const handleSaveToBackend = debounce((updatedNotes) => {
-    axios.post(`${API_URL}/save_notes`, { notes: updatedNotes }, {
-      headers: { Authorization: `Bearer ${AUTH_TOKEN}` }
-    })
+    axios.post(`${API_URL}/save_notes`, { notes: updatedNotes })
       .then(response => {
         console.log(response.data);
       })
@@ -65,7 +74,7 @@ const NotesPage = () => {
   }, 1000);
 
   const handleCardClick = (title) => {
-    setFullScreenNote(title); // Open the full screen note view
+    setFullScreenNote(title); // Open the full-screen note view
   };
 
   const handleEditChange = (e, field, title) => {
@@ -73,10 +82,10 @@ const NotesPage = () => {
     if (field === 'title') {
       const oldBody = updatedNotes[title]; // Get the old body for the note
       delete updatedNotes[title]; // Remove the old title entry
-      updatedNotes[e.target.value] = oldBody; // Add new title with the old body
-      setFullScreenNote(e.target.value); // Update full-screen note title
+      updatedNotes[DOMPurify.sanitize(e.target.value)] = oldBody; // Sanitize input
+      setFullScreenNote(DOMPurify.sanitize(e.target.value)); // Update full-screen note title
     } else if (field === 'body') {
-      updatedNotes[title] = e.target.value; // Update body content
+      updatedNotes[title] = DOMPurify.sanitize(e.target.value); // Sanitize input
     }
     setNotes(updatedNotes);
     handleSaveToBackend(updatedNotes);
@@ -84,15 +93,14 @@ const NotesPage = () => {
 
   const handleRightClick = (e, title) => {
     e.preventDefault();
+    if (!title) return; // Ensure valid title
     setContextMenu({ visible: true, x: e.pageX, y: e.pageY, title });
   };
 
   const handleEncryptNotes = () => {
-    axios.post(`${API_URL}/encrypt`, { userKey }, {
-      headers: { Authorization: `Bearer ${AUTH_TOKEN}` }
-    })
+    axios.post(`${API_URL}/encrypt`, { userKey })
       .then(response => {
-        localStorage.clear();
+        sessionStorage.clear(); // Clear session storage instead of local storage
         window.location.href = '/';
       })
       .catch(error => {
@@ -135,7 +143,7 @@ const NotesPage = () => {
               value={isNewNote ? newTitle : fullScreenNote}
               onChange={(e) => {
                 if (isNewNote) {
-                  setNewTitle(e.target.value);
+                  setNewTitle(DOMPurify.sanitize(e.target.value)); // Sanitize input
                 } else {
                   handleEditChange(e, 'title', fullScreenNote);
                 }
@@ -146,7 +154,7 @@ const NotesPage = () => {
               value={isNewNote ? newBody : notes[fullScreenNote]}
               onChange={(e) => {
                 if (isNewNote) {
-                  setNewBody(e.target.value);
+                  setNewBody(DOMPurify.sanitize(e.target.value)); // Sanitize input
                 } else {
                   handleEditChange(e, 'body', fullScreenNote);
                 }
@@ -168,7 +176,7 @@ const NotesPage = () => {
                 type="text"
                 placeholder="User Key"
                 value={userKey}
-                onChange={(e) => setUserKey(e.target.value)}
+                onChange={(e) => setUserKey(DOMPurify.sanitize(e.target.value))} // Sanitize input
               />
               <SiLetsencrypt onClick={handleEncryptNotes} className="add-icon" size={32} />
             </div>
@@ -181,8 +189,8 @@ const NotesPage = () => {
                 onClick={() => handleCardClick(title)}
                 onContextMenu={(e) => handleRightClick(e, title)}
               >
-                <h3>{title}</h3>
-                <p>{body}</p>
+                <h3 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(title) }}></h3>
+                <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(body) }}></p>
               </div>
             ))}
           </div>

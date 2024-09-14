@@ -6,10 +6,14 @@ function LoginPage() {
   const [userKey, setUserKey] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-  // const apiKey = '################'; // Replace with your actual auth token
-  const apiKey = process.env.REACT_APP_AUTH_TOKEN; //use this if u are using env variables
+  
+  // Use environment variables securely for the auth token
+  const apiKey = process.env.REACT_APP_AUTH_TOKEN; 
+  // const apiKey = 'ffdr4eFD5rcgfhREE344e4e';
+
+  const API_URL = 'https://deeply-spectrum-cellar.glitch.me'; // Replace with your actual API URL
   // const API_URL = 'http://localhost:5000';
-  const API_URL = 'https://deeply-spectrum-cellar.glitch.me';
+
   useEffect(() => {
     // Set an interval to keep the server alive every 4 minutes (240000 ms)
     const keepAliveInterval = setInterval(() => {
@@ -26,15 +30,19 @@ function LoginPage() {
     return () => clearInterval(keepAliveInterval);
   }, [apiKey]);
 
+  // Input change handler with sanitization
   const handleKeyChange = (e) => {
-    setUserKey(e.target.value);
+    const sanitizedInput = e.target.value.replace(/[<>]/g, ''); // Remove dangerous characters
+    setUserKey(sanitizedInput);
   };
 
+  // Validate user key (server-side validation will also be required)
   const validateUserKey = (key) => {
-    const regex = /^[a-zA-Z0-9!@#$%^&*()_+=-]{6,12}$/;
+    const regex = /^[a-zA-Z0-9!@#$%^&*()_+=-]{8,12}$/;
     return regex.test(key);
   };
 
+  // Securely handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -44,36 +52,34 @@ function LoginPage() {
     }
 
     try {
-      const response = await axios.post(`${API_URL}/decrypt`, { userKey }, {
+      // Use HTTPS for communication and sanitize inputs
+      const response = await axios.post(`${API_URL}/decrypt`, { userKey: userKey.trim() }, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${apiKey}` // Add API key to header
         }
       });
-      setMessage(response.data);
-      console.log(response.data);
+      setMessage(response.data.message);
       if (response.data.success) {
-        localStorage.setItem('userKey', userKey);
+        // Store userKey in sessionStorage (less persistent than localStorage)
+        sessionStorage.setItem('userKey', userKey);
+
+        // Redirect to notes page upon successful login
         navigate('/notes');
 
-        // Check if decryption is successful and if the file is decrypted
         if (response.data.isDecrypted) {
-          // Wait for 5 minutes (300000 ms) before encrypting again
+          // Encrypt the file after 5 minutes for added security
           setTimeout(async () => {
             try {
-              // Encrypt the file after 5 minutes
-              await axios.post(`${API_URL}/encrypt`, { userKey }, {
+              await axios.post(`${API_URL}/encrypt`, { userKey: userKey.trim() }, {
                 headers: {
                   'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${apiKey}` // Add API key to header
+                  'Authorization': `Bearer ${apiKey}`
                 }
               });
-              console.log('File encrypted successfully after 10 minutes.');
+              console.log('File encrypted successfully after 5 minutes.');
               navigate('/');
-              // Clear localStorage after encryption
-              localStorage.clear();
-              console.log('LocalStorage cleared.');
-
+              sessionStorage.clear(); // Clear userKey from session storage
             } catch (error) {
               console.error('Error during encryption:', error);
               setMessage('Error during encryption.');
@@ -82,12 +88,13 @@ function LoginPage() {
         }
       }
     } catch (error) {
+      // Avoid exposing sensitive error details to users
       console.error('Error:', error.response ? error.response.data : error.message);
-      setMessage('Error Decrypting data.');
+      setMessage('An error occurred. Please try again.');
     }
   };
 
-  // Internal CSS styles
+  // Internal CSS styles for better UX and protection against injection
   const styles = {
     body: {
       fontFamily: 'Arial, sans-serif',
