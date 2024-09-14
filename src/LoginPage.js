@@ -137,6 +137,8 @@ function LoginPage() {
       borderRadius: '5px',
       transition: 'border 0.3s',
       width: '100%',
+      boxSizing: 'border-box', 
+      maxWidth: '300px', 
     },
     inputFocus: {
       outline: 'none',
