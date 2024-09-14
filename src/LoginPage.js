@@ -11,13 +11,13 @@ function LoginPage() {
   const apiKey = process.env.REACT_APP_AUTH_TOKEN; 
   // const apiKey = 'ffdr4eFD5rcgfhREE344e4e';
 
-  const API_URL = process.env.REACT_APP_APIURL; // Replace with your actual API URL
-  // const API_URL = 'http://localhost:5000';
+  const apiurl = process.env.REACT_APP_APIURL; // Replace with your actual API URL
+  // const apiurl = 'http://localhost:5000';
 
   useEffect(() => {
     // Set an interval to keep the server alive every 4 minutes (240000 ms)
     const keepAliveInterval = setInterval(() => {
-      axios.get(`${API_URL}/keep-alive`, {
+      axios.get(`${apiurl}/keep-alive`, {
         headers: {
           'Authorization': `Bearer ${apiKey}` // Add API key to header
         }
@@ -53,7 +53,7 @@ function LoginPage() {
 
     try {
       // Use HTTPS for communication and sanitize inputs
-      const response = await axios.post(`${API_URL}/decrypt`, { userKey: userKey.trim() }, {
+      const response = await axios.post(`${apiurl}/decrypt`, { userKey: userKey.trim() }, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${apiKey}` // Add API key to header
@@ -71,7 +71,7 @@ function LoginPage() {
           // Encrypt the file after 5 minutes for added security
           setTimeout(async () => {
             try {
-              await axios.post(`${API_URL}/encrypt`, { userKey: userKey.trim() }, {
+              await axios.post(`${apiurl}/encrypt`, { userKey: userKey.trim() }, {
                 headers: {
                   'Content-Type': 'application/json',
                   'Authorization': `Bearer ${apiKey}`
