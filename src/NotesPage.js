@@ -174,7 +174,7 @@ const NotesPage = () => {
             <div className="encrypt-section">
               <input
                 type="text"
-                placeholder="User Key"
+                placeholder="key length 8 - 16"
                 value={userKey}
                 onChange={(e) => setUserKey(DOMPurify.sanitize(e.target.value))} // Sanitize input
               />

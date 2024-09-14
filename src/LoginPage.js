@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
 
 function LoginPage() {
   const [userKey, setUserKey] = useState('');
   const [message, setMessage] = useState('');
+  const [isKeyVisible, setIsKeyVisible] = useState(false); // State to toggle key visibility
   const navigate = useNavigate();
   
   // Use environment variables securely for the auth token
   const apiKey = process.env.REACT_APP_AUTH_TOKEN; 
-  // const apiKey = 'ffdr4eFD5rcgfhREE344e4e';
-
-   
-  // const API_URL = 'http://localhost:5000';// Replace with your actual API URL
-  // console.log(process.env.REACT_APP_APIURL);
 
   useEffect(() => {
     // Set an interval to keep the server alive every 4 minutes (240000 ms)
@@ -39,7 +36,7 @@ function LoginPage() {
 
   // Validate user key (server-side validation will also be required)
   const validateUserKey = (key) => {
-    const regex = /^[a-zA-Z0-9!@#$%^&*()_+=-]{8,12}$/;
+    const regex = /^[a-zA-Z0-9!@#$%^&*()_+=-]{8,16}$/;
     return regex.test(key);
   };
 
@@ -48,7 +45,7 @@ function LoginPage() {
     e.preventDefault();
 
     if (!validateUserKey(userKey)) {
-      setMessage('User key must be 6 to 12 characters long and include letters, numbers, and special characters.');
+      setMessage('User key must be 8 to 16 characters long and include letters, numbers, and special characters.');
       return;
     }
 
@@ -95,7 +92,12 @@ function LoginPage() {
     }
   };
 
-  // Internal CSS styles for better UX and protection against injection
+  // Toggle password visibility
+  const toggleKeyVisibility = () => {
+    setIsKeyVisible(!isKeyVisible);
+  };
+
+  // Internal CSS styles
   const styles = {
     body: {
       fontFamily: 'Arial, sans-serif',
@@ -125,16 +127,27 @@ function LoginPage() {
       flexDirection: 'column',
       gap: '15px',
     },
+    inputWrapper: {
+      position: 'relative',
+    },
     input: {
       padding: '12px',
       fontSize: '16px',
       border: '1px solid #ccc',
       borderRadius: '5px',
       transition: 'border 0.3s',
+      width: '100%',
     },
     inputFocus: {
       outline: 'none',
       borderColor: '#555',
+    },
+    eyeIcon: {
+      position: 'absolute',
+      top: '50%',
+      right: '10px',
+      transform: 'translateY(-50%)',
+      cursor: 'pointer',
     },
     button: {
       padding: '12px',
@@ -160,16 +173,21 @@ function LoginPage() {
       <div style={styles.container}>
         <h1 style={styles.header}>Enter User Key</h1>
         <form style={styles.form} onSubmit={handleSubmit}>
-          <input
-            style={styles.input}
-            type="text"
-            value={userKey}
-            onChange={handleKeyChange}
-            placeholder="Enter your key"
-            required
-            onFocus={(e) => e.target.style.borderColor = styles.inputFocus.borderColor}
-            onBlur={(e) => e.target.style.borderColor = styles.input.borderColor}
-          />
+          <div style={styles.inputWrapper}>
+            <input
+              style={styles.input}
+              type={isKeyVisible ? 'text' : 'password'} // Toggle between text and password
+              value={userKey}
+              onChange={handleKeyChange}
+              placeholder="key length 8 - 16"
+              required
+              onFocus={(e) => e.target.style.borderColor = styles.inputFocus.borderColor}
+              onBlur={(e) => e.target.style.borderColor = styles.input.borderColor}
+            />
+            <span style={styles.eyeIcon} onClick={toggleKeyVisibility}>
+              {isKeyVisible ? <FaEyeSlash /> : <FaEye />} {/* Toggle icons */}
+            </span>
+          </div>
           <button
             style={styles.button}
             type="submit"
