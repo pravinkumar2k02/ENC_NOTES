@@ -137,6 +137,9 @@ const NotesPage = () => {
       {(fullScreenNote !== null || isNewNote) && (
         <div className="full-screen-note">
           <button className="back-button" onClick={handleCloseFullScreen}>Back</button>
+          {isNewNote && (
+              <button className="save-button" onClick={handleSaveNewNote}>Save</button>
+            )}
           <div className="note-card">
             <input
               type="text"
@@ -161,9 +164,9 @@ const NotesPage = () => {
               }}
               placeholder={isNewNote ? 'Body' : ''}
             ></textarea>
-            {isNewNote && (
+            {/* {isNewNote && (
               <button className="save-button" onClick={handleSaveNewNote}>Save</button>
-            )}
+            )} */}
           </div>
         </div>
       )}
