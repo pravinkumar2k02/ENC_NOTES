@@ -88,7 +88,7 @@ function LoginPage() {
     } catch (error) {
       // Avoid exposing sensitive error details to users
       console.error('Error:', error.response ? error.response.data : error.message);
-      setMessage('An error occurred. Please try again.');
+      setMessage('Invalid password please try again.');
     }
   };
 
