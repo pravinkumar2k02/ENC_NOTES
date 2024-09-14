@@ -13,12 +13,12 @@ function LoginPage() {
 
   const API_URL = 'https://deeply-spectrum-cellar.glitch.me'; // Replace with your actual API URL
   // const API_URL = 'http://localhost:5000';
-  console.log(process.env.REACT_APP_APIURL);
+  // console.log(process.env.REACT_APP_APIURL);
 
   useEffect(() => {
     // Set an interval to keep the server alive every 4 minutes (240000 ms)
     const keepAliveInterval = setInterval(() => {
-      axios.get(`${API_URL}/keep-alive`, {
+      axios.get(`${process.env.REACT_APP_APIURL}/keep-alive`, {
         headers: {
           'Authorization': `Bearer ${apiKey}` // Add API key to header
         }
@@ -54,7 +54,7 @@ function LoginPage() {
 
     try {
       // Use HTTPS for communication and sanitize inputs
-      const response = await axios.post(`${API_URL}/decrypt`, { userKey: userKey.trim() }, {
+      const response = await axios.post(`${process.env.REACT_APP_APIURL}/decrypt`, { userKey: userKey.trim() }, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${apiKey}` // Add API key to header
@@ -72,7 +72,7 @@ function LoginPage() {
           // Encrypt the file after 5 minutes for added security
           setTimeout(async () => {
             try {
-              await axios.post(`${API_URL}/encrypt`, { userKey: userKey.trim() }, {
+              await axios.post(`${process.env.REACT_APP_APIURL}/encrypt`, { userKey: userKey.trim() }, {
                 headers: {
                   'Content-Type': 'application/json',
                   'Authorization': `Bearer ${apiKey}`
