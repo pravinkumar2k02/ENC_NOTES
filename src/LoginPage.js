@@ -136,9 +136,9 @@ function LoginPage() {
       border: '1px solid #ccc',
       borderRadius: '5px',
       transition: 'border 0.3s',
-      // width: '100%',
+      width: '100%',
       boxSizing: 'border-box', 
-      maxWidth: '300px', 
+      maxWidth: '360px', 
     },
     inputFocus: {
       outline: 'none',
